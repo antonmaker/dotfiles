@@ -4,39 +4,24 @@ local function launch(app)
   return function() hs.application.launchOrFocus(app) end
 end
 
-local function move(unit, label)
+local function withWin(fn)
   return function()
     local win = hs.window.focusedWindow()
-    if not win then
-      hs.alert.show("No focused window")
-      return
-    end
-    win:moveToUnit(unit)
-    hs.alert.show(label)
+    if win then fn(win) end
   end
 end
 
-hs.hotkey.bind(hyper, "C", function()
-  hs.application.launchOrFocus("Google Chrome")
-end)
-
-hs.hotkey.bind(hyper, "A", function()
-  hs.application.launchOrFocus("Arc")
-end)
-
-hs.hotkey.bind(hyper, "T", function()
-  hs.application.launchOrFocus("kitty")
-end)
-
-hs.hotkey.bind(hyper, "V", function()
-  hs.application.launchOrFocus("Visual Studio Code")
-end)
+-- Apps
+hs.hotkey.bind(hyper, "C", launch("Google Chrome"))
+hs.hotkey.bind(hyper, "A", launch("Arc"))
+hs.hotkey.bind(hyper, "T", launch("kitty"))
+hs.hotkey.bind(hyper, "V", launch("Visual Studio Code"))
 
 -- Windows
-hs.hotkey.bind(hyper, "M", move({0,   0, 0.6, 1}, "Left 3/5"))
-hs.hotkey.bind(hyper, "I", move({0.6, 0, 0.4, 1}, "Right 2/5"))
-hs.hotkey.bind(hyper, "N", move({0,   0, 0.4, 1}, "Left 2/5"))
-hs.hotkey.bind(hyper, "E", move({0.4, 0, 0.6, 1}, "Right 3/5"))
+hs.hotkey.bind(hyper, "M", withWin(function(win) win:maximize() end))
+hs.hotkey.bind(hyper, "N", withWin(function(win) win:moveToUnit({0, 0, 0.42, 1}) end))
+hs.hotkey.bind(hyper, "E", withWin(function(win) win:moveToUnit({0.42, 0, 0.58, 1}) end))
+hs.hotkey.bind(hyper, "I", withWin(function(win) win:moveToScreen(win:screen():next()) end))
 
 -- System
 hs.hotkey.bind(hyper, "L", function() hs.caffeinate.lockScreen() end)

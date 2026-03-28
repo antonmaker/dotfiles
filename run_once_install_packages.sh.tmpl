@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  brew install \
+    git \
+    neovim \
+    fzf \
+    lazygit \
+    ripgrep \
+    fd \
+    hammerspoon
+
+  brew install --cask \
+    visual-studio-code
+fi

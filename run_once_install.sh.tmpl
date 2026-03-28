@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -e
+
+echo "🚀 Starting bootstrap..."
+
+# Detect OS
+OS="$(uname)"
+
+if [[ "$OS" == "Darwin" ]]; then
+  echo "🍎 macOS detected"
+
+  # Install Homebrew if not installed
+  if ! command -v brew >/dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+
+  brew update
+fi
+
+echo "✅ Bootstrap base done"

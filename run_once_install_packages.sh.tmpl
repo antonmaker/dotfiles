@@ -2,15 +2,31 @@
 set -e
 
 if [[ "$(uname)" == "Darwin" ]]; then
-  brew install \
-    git \
-    neovim \
-    fzf \
-    lazygit \
-    ripgrep \
-    fd \
-    hammerspoon
+  formulae=(
+    git
+    neovim
+    fzf
+    lazygit
+    ripgrep
+    fd
+  )
 
-  brew install --cask \
+  casks=(
     visual-studio-code
+    hammerspoon
+  )
+
+  # Install CLI tools
+  for pkg in "${formulae[@]}"; do
+    if ! brew list "$pkg" >/dev/null 2>&1; then
+      brew install "$pkg"
+    fi
+  done
+
+  # Install GUI apps
+  for app in "${casks[@]}"; do
+    if ! brew list --cask "$app" >/dev/null 2>&1; then
+      brew install --cask "$app"
+    fi
+  done
 fi

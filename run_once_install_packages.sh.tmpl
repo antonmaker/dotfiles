@@ -17,8 +17,10 @@ if [[ "$(uname)" == "Darwin" ]]; then
   )
 
   casks=(
+  {{ if ne .chezmoi.hostname "GCF-AEMELYANOV-MAC" }}
     visual-studio-code
     hammerspoon
+  {{ end }}
   )
 
   # Install CLI tools
